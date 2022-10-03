@@ -40,8 +40,6 @@ const RegisterScreen = ({ navigation }) => {
             businessName: userBusiness
         };
 
-        console.log(dataToSend);
-
         fetch('https://proyecto-estr-fisica.vercel.app/api/register', {
             method: 'POST',
             body: JSON.stringify(dataToSend),

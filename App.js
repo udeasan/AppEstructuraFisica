@@ -7,6 +7,8 @@ import HomeScreen from './Screens/Pages/HomeScreen';
 import SplashScreen from './Screens/Pages/SplashScreen';
 import RegisterScreen from './Screens/Pages/RegisterScreen';
 import LoginScreen from './Screens/Pages/LoginScreen';
+import NewDateScreen from './Screens/Pages/NewDateScreen';
+import ViewDateScreen from './Screens/Pages/ViewDateScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -26,6 +28,8 @@ const App = () => {
         <Stack.Screen name="Splash" component={SplashScreen} options={{ headerShown: false }}></Stack.Screen>
         <Stack.Screen name="Auth" component={Auth} options={{ headerShown: false }}></Stack.Screen>
         <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }}></Stack.Screen>
+        <Stack.Screen name="NewDate" component={NewDateScreen} options={{ headerShown: false }}></Stack.Screen>
+        <Stack.Screen name="ViewDate" component={ViewDateScreen} options={{ headerShown: false }}></Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
   );

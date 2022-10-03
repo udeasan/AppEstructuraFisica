@@ -11,11 +11,11 @@ const LoginScreen = ({ navigation }) => {
     const handleSubmitPress = () => {
         setErrorText('');
         if (!userEmail) {
-            alert('Please enter your email');
+            alert('Por favor ingrese su correo electronico');
             return;
         }
         if (!userPassword) {
-            alert('Please enter your password');
+            alert('Por favor ingrese su contraseña');
             return;
         }
 
@@ -45,7 +45,7 @@ const LoginScreen = ({ navigation }) => {
                 onChangeText={(userEmail) => {
                     setUserEmail(userEmail);
                 }}
-                placeholder="Enter your email"
+                placeholder="Ingrese su email"
                 keyboardType="email-address"
             />
             <TextInput
