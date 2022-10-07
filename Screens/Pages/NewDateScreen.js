@@ -1,24 +1,49 @@
 import AsyncStorage from "@react-native-community/async-storage";
 import React, { useEffect, useState } from "react";
-import { View, Text, Button, Alert, TextInput } from "react-native";
+import { View, Text, Button, Alert, TextInput, StyleSheet, ScrollView } from "react-native";
+import DatePicker from 'react-native-date-picker';
+import SelectDropdown from 'react-native-select-dropdown';
 
 const NewDateScreen = ({ navigation }) => {
 
-    const [date, setDate] = useState('');
-    const [hour, setHour] = useState('');
+    const [date, setDate] = useState(new Date());
+    const [hour, setHour] = useState(new Date());
     const [type, setType] = useState('');
     const [businessName, setBusinessName] = useState('');
     const [errorText, setErrorText] = useState('');
 
+    const [bussinessList, setBusinessList] = useState([]);
+
+    const [openDate, setOpenDate] = useState(false);
+    const [openHour, setOpenHour] = useState(false);
+
+    const [hasDate, setHasDate] = useState(false);
+    const [hasHour, setHasHour] = useState(false);
+
+    useEffect(() => {
+
+        fetch('https://proyecto-estr-fisica.vercel.app/api/business', {
+            method: 'GET'
+        })
+            .then((response) => response.json())
+            .then((responseJson) => {
+                setBusinessList(responseJson);
+            }).catch((error) => {
+                console.log(error)
+                console.error("Ocurrio un error al consultar los negocios")
+            })
+
+    }, []);
+
     const handleSubmitPress = () => {
         setErrorText('');
 
-        if (!date) {
+        if (!hasDate) {
             alert('Por favor ingrese la fecha');
             return;
         }
-        if (!hour) {
-            alert('Por favor ingrese la fecha');
+        if (!hasHour) {
+            alert('Por favor ingrese la hora');
             return;
         }
         if (!type) {
@@ -51,8 +76,8 @@ const NewDateScreen = ({ navigation }) => {
             .then((response) => response.json())
             .then((responseJson) => {
                 console.log(responseJson);
-                setDate("");
-                setHour("");
+                setHasDate(false);
+                setHasHour(false);
                 setType("");
                 setBusinessName("");
                 navigation.navigate("ViewDate");
@@ -64,24 +89,11 @@ const NewDateScreen = ({ navigation }) => {
     }
 
     return (
-        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-            <Text style={{ color: 'black', }}>Agregar una nueva Cita</Text>
-            <TextInput
-                style={{ color: 'black', }}
-                onChangeText={(dateInput) => {
-                    setDate(dateInput);
-                }}
-                placeholder="Fecha de la Cita"
-                keyboardType="default"
-            />
-            <TextInput
-                style={{ color: 'white', }}
-                onChangeText={(hourInput) => {
-                    setHour(hourInput);
-                }}
-                placeholder="Hora de la Cita"
-                keyboardType="default"
-            />
+        <>
+        <ScrollView style={ styles.container }>
+            <Text style={ styles.textoTitle }>Agregar una nueva Cita</Text>
+            <Button title="Elegir Fecha" onPress={() => setOpenDate(true)} />
+            <Button title="Elegir Hora" onPress={() => setOpenHour(true)} />
             <TextInput
                 style={{ color: 'black', }}
                 onChangeText={(typeInput) => {
@@ -90,22 +102,112 @@ const NewDateScreen = ({ navigation }) => {
                 placeholder="Tipo de la Cita"
                 keyboardType="default"
             />
-            <TextInput
-                style={{ color: 'black', }}
-                onChangeText={(BusinessName) => {
-                    setBusinessName(BusinessName);
+
+            <SelectDropdown
+                style={styles.containerInputList}
+                data={bussinessList.map(item => item.businessName)}
+                onSelect={(selectedItem, index) => {
+                    console.log(selectedItem);
                 }}
-                placeholder="Nombre del Negocio"
-                keyboardType="default"
+                defaultButtonText={'Seleccione el lugar'}
+                buttonTextAfterSelection={(selectedItem, index) => {
+                    setBusinessName(selectedItem);
+                    return selectedItem
+                }}
+                rowTextForSelection={(item, index) => {
+                    return item
+                }}
             />
+
             {errorText != '' ? (
                 <Text style={styles.errorTextStyle}>{errorText}</Text>
             ) : null}
             <Button title="Añadir cita" onPress={handleSubmitPress} />
-            <Button title="Ver mis Citas" onPress={() => navigation.navigate('ViewDate')} />
-            <Button title="Regresar al Inicio" onPress={() => navigation.navigate('Home')} />
-        </View>
+            { hasDate &&
+                <Text>{date.toDateString()}</Text>
+            }
+            { hasHour &&
+                <Text>{hour.toDateString()}</Text>
+            }
+            <Text>{businessName}</Text>
+            
+        </ScrollView>
+        <DatePicker
+            modal
+            open={openDate}
+            date={date}
+            mode="date"
+            minimumDate={new Date()}
+            onConfirm={(date) => {
+            setOpenDate(false)
+            setHasDate(true)
+            setDate(date)
+            }}
+            onCancel={() => {
+            setOpenDate(false)
+            }}
+        />
+        <DatePicker
+            modal
+            open={openHour}
+            date={hour}
+            mode="time"
+            onConfirm={(hour) => {
+            setOpenHour(false)
+            setHasHour(true)
+            setHour(hour)
+            }}
+            onCancel={() => {
+            setOpenHour(false)
+            }}
+        />
+        </>
     );
 }
 
 export default NewDateScreen;
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: '#009688',
+        paddingLeft: 25,
+        paddingTop: 50,
+        paddingBottom: 50
+    },
+    textoGeneral: {
+        color: 'white',
+        fontSize: 25,
+        fontFamily: 'Geneva'
+    },
+    textoTitle: {
+        color: 'white',
+        fontSize: 40,
+        textAlign: 'center',
+        fontWeight: 'bold',
+        fontFamily: 'Geneva',
+        marginBottom: 25,
+        marginLeft: -20
+    },
+    containerItem: {
+        backgroundColor: '#B2DFDB',
+        padding: 20,
+        width: "90%",
+        margin: 5,
+        color: 'black',
+        fontSize: 25,
+        fontFamily: 'Geneva'
+    },
+    containerItemEmpty: {
+        backgroundColor: '#009688',
+        padding: 20,
+        width: "90%",
+        margin: 5
+    },
+    containerInputList: {
+        width: '80%',
+    height: 50,
+    backgroundColor: '#444',
+    borderRadius: 8,
+    }
+});

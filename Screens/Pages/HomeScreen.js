@@ -58,8 +58,6 @@ const HomeScreen = ({ navigation }) => {
                         );
                     }
                 } />
-            <Button title="Ver mis Citas" onPress={() => navigation.navigate('ViewDate')} />
-            <Button title="Agregar una nueva Cita" onPress={() => navigation.navigate('NewDate')} />
         </View>
     );
 }

@@ -32,7 +32,7 @@ const LoginScreen = ({ navigation }) => {
             .then((response) => response.json())
             .then((responseJson) => {
                 AsyncStorage.setItem('token', responseJson.token);
-                navigation.replace("Home")
+                navigation.replace("BottomTabs")
             }).catch((error) => {
                 setErrorText('No fue posible iniciar sesión');
             })

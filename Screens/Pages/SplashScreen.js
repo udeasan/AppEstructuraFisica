@@ -7,17 +7,17 @@ const SplashScreen = ({ navigation }) => {
     useEffect(() => {
         setTimeout(() => {
             AsyncStorage.getItem('token').then((value) => {
-                navigation.replace( value === null ? "Auth" : "Home")
+                navigation.replace( value === null ? "Auth" : "BottomTabs")
             });
         }, 5000);
     }, []);
 
     return (
         <View style={styles.container}>
-            <Text style={{ color: 'blue', }}>Verificando usuario existente</Text>
-            <Text>---</Text>
-            <Text style={{ color: 'black', }}>Gestión de citas</Text>
-            <Text style={{ color: 'black', }}>UdeA - 2022</Text>
+            <Text style={ styles.textoGeneral }>Gestión de citas</Text>
+            <Text style={ styles.textoGeneral }>UdeA - 2022</Text>
+            <Text>______________</Text>
+            <Text style={ styles.textoGeneral }>Verificando usuario existente</Text>
         </View>
     );
 }
@@ -29,6 +29,11 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: 'gray'
+        backgroundColor: '#009688'
     },
+    textoGeneral: {
+        color: 'white',
+        fontSize: 25,
+        fontFamily: 'Geneva'
+    }
 });

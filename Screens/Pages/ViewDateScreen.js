@@ -1,10 +1,11 @@
 import AsyncStorage from "@react-native-community/async-storage";
 import React, { useEffect, useState } from "react";
-import { View, Text, Button, Alert } from "react-native";
+import { View, Text, Button, Alert, FlatList, StyleSheet, ScrollView } from "react-native";
 
 const ViewDateScreen = ({ navigation }) => {
 
-    const [dates, setDates] = useState([])
+    const [dateList, setDateList] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
     
     useEffect(() => {
         AsyncStorage.getItem('token').then((value) => {
@@ -20,32 +21,69 @@ const ViewDateScreen = ({ navigation }) => {
         })
             .then((response) => response.json())
             .then((responseJson) => {
-                responseJson.forEach(date => {
-                    var addDate = dates.push(date.tipoCita);
-                    setDates(addDate);
-                });
-                console.log(dates);
+                setDateList(responseJson);
+                setIsLoading(true);
             }).catch((error) => {
                 console.log(error)
                 console.error("Ocurrio un error al consultar las citas del Usuario")
             })
         })
-    }, [])
+    }, []);
 
     return (
-        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-
-            <Text style={{ color: 'black', }}>Viendo mis Citas</Text>
-            {dates.map( keyValue => {
-                return (
-                    <Text style={{ color: 'black', }}></Text>
-                );
-            })}
-            <Text style={{ color: 'black', }}></Text>
-            <Button title="Regresar al Inicio" onPress={() => navigation.navigate('Home')} />
-            <Button title="Agregar una nueva Cita" onPress={() => navigation.navigate('NewDate')} />
-        </View>
+        <ScrollView style={ styles.container }>
+            {
+                !isLoading &&
+                <Text>Cargando tus Citas</Text>
+            }
+            <Text style={styles.textoTitle}>Estas son tus Citas</Text>
+            {isLoading &&
+                dateList.map((item, key)=>(
+                    <Text key={key} style={styles.containerItem}>{item.fecha}{item.hora}{item.businessDate}{item.tipoCita}</Text>
+                ))
+            }
+            <Text style={styles.containerItemEmpty}></Text>
+        </ScrollView>
     );
 }
 
 export default ViewDateScreen;
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: '#009688',
+        paddingLeft: 25,
+        paddingTop: 50,
+        paddingBottom: 50
+    },
+    textoGeneral: {
+        color: 'white',
+        fontSize: 25,
+        fontFamily: 'Geneva'
+    },
+    textoTitle: {
+        color: 'white',
+        fontSize: 40,
+        textAlign: 'center',
+        fontWeight: 'bold',
+        fontFamily: 'Geneva',
+        marginBottom: 25,
+        marginLeft: -20
+    },
+    containerItem: {
+        backgroundColor: '#B2DFDB',
+        padding: 20,
+        width: "90%",
+        margin: 5,
+        color: 'black',
+        fontSize: 25,
+        fontFamily: 'Geneva'
+    },
+    containerItemEmpty: {
+        backgroundColor: '#009688',
+        padding: 20,
+        width: "90%",
+        margin: 5
+    }
+});
