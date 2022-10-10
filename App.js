@@ -4,6 +4,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Button, View, Text } from 'react-native';
 import Icon from "react-native-vector-icons";
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import HomeScreen from './Screens/Pages/HomeScreen';
 import SplashScreen from './Screens/Pages/SplashScreen';
@@ -15,14 +16,43 @@ import ViewDateScreen from './Screens/Pages/ViewDateScreen';
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
+const screenOptions = {
+  "tabBarActiveTintColor": "#e91e63",
+  "tabBarStyle": [
+    {
+      "display": "flex"
+    },
+    null
+  ]
+};
+
 function BottomTabs() {
   return (
-    <Tab.Navigator initialRouteName='Home'>
-      <Tab.Screen name="Home" component={HomeScreen} options={{ headerShown: false, unmountOnBlur: false }}/>
-      <Tab.Screen name="NewDate" component={NewDateScreen} options={{ headerShown: false, unmountOnBlur: true }}/>
-      <Tab.Screen name="ViewDate" component={ViewDateScreen} options={{ headerShown: false, unmountOnBlur: true }}>
-        <Icon name="rocket" size={30} color="#900" />
-      </Tab.Screen>
+    <Tab.Navigator initialRouteName='Home'
+    screenOptions={screenOptions}
+    >
+      <Tab.Screen name="Home" component={HomeScreen} options={{ 
+        headerShown: false, 
+        unmountOnBlur: false,
+        tabBarIcon: ({ color, size }) => (
+          <MaterialCommunityIcons name="home" screenOptions={screenOptions} />
+        ),
+        tabBarLabel: "Inicio"
+      }}/>
+      <Tab.Screen name="NewDate" component={NewDateScreen} options={{ 
+        headerShown: false, 
+        unmountOnBlur: true,
+        tabBarIcon: ({ color, size }) => (
+          <MaterialCommunityIcons name="home" size={24} color="black" />
+        ),
+        tabBarLabel: "Nueva Cita" }}/>
+      <Tab.Screen name="ViewDate" component={ViewDateScreen} options={{ 
+        headerShown: false, 
+        unmountOnBlur: true,
+        tabBarIcon: ({ color, size }) => (
+          <MaterialCommunityIcons name="home" size={24} color="black" />
+        ),
+        tabBarLabel: "Mis Citas" }}/>
     </Tab.Navigator>
   );
 }
