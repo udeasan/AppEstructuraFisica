@@ -1,4 +1,5 @@
 import AsyncStorage from "@react-native-community/async-storage";
+import Moment from 'moment';
 import React, { useEffect, useState } from "react";
 import { View, Text, Button, Alert, FlatList, StyleSheet, ScrollView, Modal, Pressable } from "react-native";
 
@@ -10,6 +11,17 @@ const ViewDateScreen = ({ navigation }) => {
     const [needToReload, setNeedToReload] = useState(false);
 
     const [idToDelete, setIdToDelete] = useState("");
+
+    Moment.locale('en');
+    Moment.updateLocale('en', {
+        weekdays : [
+            "Domingo", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado"
+        ],
+        months : [
+            "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio",
+            "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+        ]
+    });
 
     useEffect(() => {
         AsyncStorage.getItem('token').then((value) => {
@@ -120,13 +132,20 @@ const ViewDateScreen = ({ navigation }) => {
             <Text style={styles.textoTitle}>Estas son tus Citas</Text>
             {isLoading &&
                 dateList.map((item, key) => (
-                    <Text style={styles.containerItem} key={key}>
-                        <Button  style={{color: "red", backgroundColor: "Red", display:"line"}} onPress={() => {
+                    <View style={styles.containerItem} key={key}>
+                        <Pressable
+                        style={styles.button}
+                        onPress={() => {
                             setIdToDelete(item._id);
                             setModalVisible(!modalVisible);
-                        }} title="X" />
-                        <Text>{item.fecha}{item.hora}{item.businessDate}{item.tipoCita}</Text>
-                    </Text>
+                        }}>
+                            <Text>Cancelar esta cita</Text>
+                        </Pressable>
+                        <Text style={styles.textoItem}>{Moment(item.fecha).format('dddd, DD/MMM/YYYY')}</Text>
+                        <Text style={styles.textoItem}>{Moment(item.hora).format('LT')}</Text>
+                        <Text style={styles.textoItem}>{item.businessDate}</Text>
+                        <Text style={styles.textoItem}>{item.tipoCita}</Text>
+                    </View>
                 ))
             }
             <Text style={styles.containerItemEmpty}></Text>
@@ -158,14 +177,16 @@ const styles = StyleSheet.create({
         marginBottom: 25,
         marginLeft: -20
     },
+    textoItem: {
+        color: 'black',
+        fontSize: 25,
+        fontFamily: 'Geneva'
+    },
     containerItem: {
         backgroundColor: '#B2DFDB',
         padding: 20,
         width: "90%",
-        margin: 5,
-        color: 'black',
-        fontSize: 25,
-        fontFamily: 'Geneva'
+        margin: 5
     },
     containerItemEmpty: {
         backgroundColor: '#009688',

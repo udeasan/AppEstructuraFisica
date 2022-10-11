@@ -134,6 +134,7 @@ const NewDateScreen = ({ navigation }) => {
         </ScrollView>
         <DatePicker
             modal
+            locale={'es'}
             open={openDate}
             date={date}
             mode="date"
@@ -149,6 +150,7 @@ const NewDateScreen = ({ navigation }) => {
         />
         <DatePicker
             modal
+            locale={'es'}
             open={openHour}
             date={hour}
             mode="time"
