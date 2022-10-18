@@ -1,6 +1,15 @@
-import React, { useState } from "react";
-import { Button, ScrollView, Switch, TextInput, View, StyleSheet, Text } from "react-native";
-import AsyncStorage from "@react-native-community/async-storage";
+import React, { useState } from 'react';
+import {
+    Button,
+    ScrollView,
+    Switch,
+    TextInput,
+    View,
+    StyleSheet,
+    Text,
+} from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
+import { styles } from '../../styles/FormStyle';
 
 const RegisterScreen = ({ navigation }) => {
     const [userEmail, setUserEmail] = useState('');
@@ -10,8 +19,10 @@ const RegisterScreen = ({ navigation }) => {
     const [userBusiness, setUserBusiness] = useState('');
     const [errorText, setErrorText] = useState('');
 
+    const Separator = () => <View style={styles.separator} />;
+
     const handleSubmitPress = () => {
-        setErrorText("");
+        setErrorText('');
         if (!userEmail) {
             alert('Please enter your email');
             return;
@@ -37,7 +48,7 @@ const RegisterScreen = ({ navigation }) => {
             address: '',
             isAdmin: userAdmin,
             profilePicture: '',
-            businessName: userBusiness
+            businessName: userBusiness,
         };
 
         fetch('https://proyecto-estr-fisica.vercel.app/api/register', {
@@ -45,74 +56,82 @@ const RegisterScreen = ({ navigation }) => {
             body: JSON.stringify(dataToSend),
             headers: {
                 'Content-Type': 'application/json',
-                'Accept': 'application/json',
+                Accept: 'application/json',
             },
         })
-            .then((response) => response.json())
-            .then((responseJson) => {
+            .then(response => response.json())
+            .then(responseJson => {
                 AsyncStorage.setItem('token', responseJson.token);
-                navigation.replace("BottomTabs")
-            }).catch((error) => {
-                setErrorText('No fue posible Registrarse');
+                navigation.replace('BottomTabs');
             })
-    }
+            .catch(error => {
+                setErrorText('No fue posible Registrarse');
+            });
+    };
 
     return (
         <View style={styles.containerStyle}>
-            <TextInput
-                onChangeText={(userEmail) => {
-                    setUserEmail(userEmail);
-                }}
-                placeholder="Enter your email"
-                keyboardType="email-address"
-            />
-            <TextInput
-                onChangeText={(userName) => {
-                    setUserName(userName);
-                }}
-                placeholder="Enter your name"
-                keyboardType="default"
-            />
-            <TextInput
-                onChangeText={(userPassword) => {
-                    setUserPassword(userPassword);
-                }}
-                placeholder="Enter your password"
-                keyboardType="default"
-                secureTextEntry={true}
-            />
-            <View>
-                <Text>¿Es un negocio?</Text>
-                <Switch value={userAdmin} onValueChange={(userAdmin) => setUserAdmin(userAdmin)}></Switch>
+            
+            <View style={styles.viewTitle}>
+                <Text style={styles.textTitle}>REGISTRO</Text>
+                <Separator />
             </View>
-            {userAdmin ? (
+
+            <View style={styles.formulario}>
                 <TextInput
-                    onChangeText={(userBusiness) => setUserBusiness(userBusiness)}
-                    placeholder="Enter the name of your business"
+                    style={styles.textoInput}
+                    onChangeText={userEmail => {setUserEmail(userEmail); }}
+                    placeholder="Enter your email"
+                    keyboardType="email-address"
+                />
+                <TextInput
+                    style={styles.textoInput}
+                    onChangeText={userName => {setUserName(userName);}}
+                    placeholder="Enter your name"
                     keyboardType="default"
                 />
-            ) : null}
-            {errorText != '' ? (
-                <Text style={styles.errorTextStyle}>{errorText}</Text>
-            ) : null}
-            <Button title="Registrarse" onPress={handleSubmitPress} />
-            <Button title="Iniciar Sesión" onPress={() => navigation.navigate('Login')} />
+                <TextInput
+                    style={styles.textoInput}
+                    onChangeText={userPassword => {setUserPassword(userPassword);}}
+                    placeholder="Enter your password"
+                    keyboardType="default"
+                    secureTextEntry={true}
+                />
+            </View>
+
+            <View style={styles.switchContainer}>
+                <View style={styles.switch}>
+                    <Text
+                    style={styles.switchText}
+                    >¿Es un negocio?</Text>
+                    <Switch
+                        value={userAdmin}
+                        onValueChange={userAdmin => setUserAdmin(userAdmin)}></Switch>
+                </View>
+
+                {userAdmin ? (
+                    <TextInput
+                        style={styles.textoInput}
+                        onChangeText={userBusiness => setUserBusiness(userBusiness)}
+                        placeholder="Enter the name of your business"
+                        keyboardType="default"
+                    />
+                ) : null}
+                {errorText != '' ? (
+                    <Text style={styles.errorTextStyle}>{errorText}</Text>
+                ) : null}
+            </View>
+
+            <View style={styles.buttonAlingRow}>
+                <Button title="Registrarse" onPress={handleSubmitPress} />
+
+                <Button
+                    title="Iniciar Sesión"
+                    onPress={() => navigation.navigate('Login')}
+                />
+            </View>
         </View>
     );
-}
+};
 
 export default RegisterScreen;
-
-const styles = StyleSheet.create({
-    containerStyle: {
-        flex: 1,
-        justifyContent: 'center',
-        alignContent: 'center',
-        backgroundColor: 'gray',
-    },
-    errorTextStyle: {
-        color: 'red',
-        textAlign: 'center',
-        fontSize: 14,
-    },
-});
