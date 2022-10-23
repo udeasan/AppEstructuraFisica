@@ -1,9 +1,10 @@
 import * as React from 'react';
-import {NavigationContainer} from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-
+import { useEffect, useState } from "react";
+import AsyncStorage from '@react-native-community/async-storage';
 import HomeScreen from './Screens/Pages/HomeScreen';
 import SplashScreen from './Screens/Pages/SplashScreen';
 import RegisterScreen from './Screens/Pages/RegisterScreen';
@@ -34,7 +35,7 @@ function BottomTabs() {
           headerShown: false,
           unmountOnBlur: true,
           tabBarLabel: 'Inicio',
-          tabBarIcon: ({color, size}) => (
+          tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons
               name="home"
               color={color}
@@ -49,11 +50,11 @@ function BottomTabs() {
           headerShown: false,
           unmountOnBlur: true,
           tabBarLabel: 'Nueva Cita',
-          tabBarIcon: ({color, size}) => (
+          tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons
               name="clock-time-nine-outline"
               color={color}
-              size={24}/>
+              size={24} />
           ),
         }}
       />
@@ -65,7 +66,7 @@ function BottomTabs() {
           unmountOnBlur: true,
           showIcon: true,
           tabBarLabel: 'Mis Citas',
-          tabBarIcon: ({color, size}) => (
+          tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons
               name="clipboard-text-multiple"
               size={24}
@@ -84,31 +85,33 @@ function Auth() {
       <Stack.Screen
         name="Register"
         component={RegisterScreen}
-        options={{headerShown: false}}></Stack.Screen>
+        options={{ headerShown: false }}
+      ></Stack.Screen>
       <Stack.Screen
         name="Login"
         component={LoginScreen}
-        options={{headerShown: false}}></Stack.Screen>
+        options={{ headerShown: false }}></Stack.Screen>
     </Stack.Navigator>
   );
 }
 
 const App = () => {
+
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Splash">
         <Stack.Screen
           name="Splash"
           component={SplashScreen}
-          options={{headerShown: false}}></Stack.Screen>
+          options={{ headerShown: false }}></Stack.Screen>
         <Stack.Screen
           name="Auth"
           component={Auth}
-          options={{headerShown: false}}></Stack.Screen>
+          options={{ headerShown: false }}></Stack.Screen>
         <Stack.Screen
           name="BottomTabs"
           component={BottomTabs}
-          options={{headerShown: false}}></Stack.Screen>
+          options={{ headerShown: false }}></Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -1,6 +1,7 @@
 import AsyncStorage from "@react-native-community/async-storage";
 import React, { useEffect, useState } from "react";
 import {View, Text, Button, TextInput, ScrollView, Image} from 'react-native';
+import Moment from 'moment';
 import DatePicker from 'react-native-date-picker';
 import SelectDropdown from 'react-native-select-dropdown';
 import {styles} from '../../styles/DateStyle';
@@ -20,6 +21,17 @@ const NewDateScreen = ({ navigation }) => {
 
     const [hasDate, setHasDate] = useState(false);
     const [hasHour, setHasHour] = useState(false);
+
+    Moment.locale('en');
+    Moment.updateLocale('en', {
+        weekdays : [
+            "Domingo", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado"
+        ],
+        months : [
+            "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio",
+            "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+        ]
+    });
 
     useEffect(() => {
 
@@ -108,8 +120,9 @@ const NewDateScreen = ({ navigation }) => {
                         <TextInput
                             style={styles.textoInput}
                             onChangeText={(typeInput) => {setType(typeInput);}}
-                            placeholder="Tipo de la Cita"
+                            placeholder="Una descripción breve"
                             keyboardType="default"
+                            placeholderTextColor={'gray'}
                             />   
                     </View>
                     <View style={styles.viewSingleObject}>
@@ -149,12 +162,12 @@ const NewDateScreen = ({ navigation }) => {
 
                         { hasDate &&
                             <Text style={styles.textoItemNewDateSecundary}>
-                                {date.toDateString()}</Text>
+                                {Moment(date).format('dddd, DD/MMM/YYYY')}</Text>
                         }
 
                         { hasHour &&
                             <Text style={styles.textoItemNewDateSecundary}>
-                                {hour.toDateString()}</Text>
+                                {Moment(hour).format('LT')}</Text>
                         }
 
                     </View>

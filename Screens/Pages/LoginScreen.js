@@ -10,6 +10,28 @@ const LoginScreen = ({ navigation }) => {
 
     const Separator = () => <View style={styles.separator} />;
 
+    const checkUser = () => {
+        AsyncStorage.getItem('token').then(value => {
+            if (value === null) {
+                navigation.replace('Auth');
+            }
+            let auth = 'Bearer ' + value;
+            fetch('https://proyecto-estr-fisica.vercel.app/api/me', {
+                method: 'GET',
+                headers: {
+                    'Authorization': auth,
+                },
+            })
+                .then((response) => response.json())
+                .then((responseJson) => {
+                    AsyncStorage.setItem('isAdmin', responseJson.isAdmin.toString());
+                }).catch((error) => {
+                    console.log(error)
+                    console.error("Ocurrio un error al validar el tipo de usuario")
+                })
+        });
+    }
+
     const handleSubmitPress = () => {
         setErrorText('');
         if (!userEmail) {
@@ -34,6 +56,8 @@ const LoginScreen = ({ navigation }) => {
             .then((response) => response.json())
             .then((responseJson) => {
                 AsyncStorage.setItem('token', responseJson.token);
+                console.log("Hey");
+                checkUser();
                 navigation.replace("BottomTabs")
             }).catch((error) => {
                 setErrorText('No fue posible iniciar sesión');

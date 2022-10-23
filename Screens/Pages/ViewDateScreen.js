@@ -31,24 +31,28 @@ const ViewDateScreen = ({ navigation }) => {
                 navigation.replace('Auth');
             };
             let url = 'https://proyecto-estr-fisica.vercel.app/api/date';
-            if(AsyncStorage.getItem('isAdmin')) {
-                url = 'https://proyecto-estr-fisica.vercel.app/api/business/date';
-                };
-            let auth = "Bearer " + value;
-            fetch(url, {
-                method: 'GET',
-                headers: {
-                    'Authorization': auth,
-                },
-            })
-                .then((response) => response.json())
-                .then((responseJson) => {
-                    setDateList(responseJson);
-                    setIsLoading(true);
-                }).catch((error) => {
-                    console.log(error)
-                    console.error("Ocurrio un error al consultar las citas del Usuario")
+            AsyncStorage.getItem('isAdmin').then((valueAdmin) => {
+                console.log("Still going, with" + valueAdmin + " and " + value)
+                if(valueAdmin === "true") {
+                    url = 'https://proyecto-estr-fisica.vercel.app/api/business/date';
+                    };
+                let auth = "Bearer " + value;
+                fetch(url, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': auth,
+                    },
                 })
+                    .then((response) => response.json())
+                    .then((responseJson) => {
+                        setDateList(responseJson);
+                        setIsLoading(true);
+                    }).catch((error) => {
+                        console.log(error)
+                        console.error("Ocurrio un error al consultar las citas del Usuario")
+                    })
+            })
+            
         })
     }, []);
 

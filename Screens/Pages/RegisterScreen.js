@@ -19,22 +19,44 @@ const RegisterScreen = ({ navigation }) => {
 
     const Separator = () => <View style={styles.separator} />;
 
+    const checkUser = () => {
+        AsyncStorage.getItem('token').then(value => {
+            if (value === null) {
+                navigation.replace('Auth');
+            }
+            let auth = 'Bearer ' + value;
+            fetch('https://proyecto-estr-fisica.vercel.app/api/me', {
+                method: 'GET',
+                headers: {
+                    'Authorization': auth,
+                },
+            })
+                .then((response) => response.json())
+                .then((responseJson) => {
+                    AsyncStorage.setItem('isAdmin', responseJson.isAdmin.toString());
+                }).catch((error) => {
+                    console.log(error)
+                    console.error("Ocurrio un error al validar el tipo de usuario")
+                })
+        });
+    }
+
     const handleSubmitPress = () => {
         setErrorText('');
         if (!userEmail) {
-            alert('Please enter your email');
+            alert('Por favor ingrese su correo electrónico');
             return;
         }
         if (!userName) {
-            alert('Please enter your name');
+            alert('Por favor ingrese su nombre');
             return;
         }
         if (!userPassword) {
-            alert('Please enter your password');
+            alert('Por favor ingrese una contraseña');
             return;
         }
         if (userAdmin && !userBusiness) {
-            alert('Please enter the name of your business');
+            alert('Por favor ingrese el nombre de su negocio');
             return;
         }
 
@@ -60,10 +82,11 @@ const RegisterScreen = ({ navigation }) => {
             .then(response => response.json())
             .then(responseJson => {
                 AsyncStorage.setItem('token', responseJson.token);
+                checkUser()
                 navigation.replace('BottomTabs');
             })
             .catch(error => {
-                setErrorText('No fue posible Registrarse');
+                setErrorText('No fue posible registrarse en este momento');
             });
     };
 

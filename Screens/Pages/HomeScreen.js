@@ -8,6 +8,7 @@ const HomeScreen = ({ navigation }) => {
     const [userName, setUserName] = useState('');
     const [userEmail, setUserEmail] = useState('');
     const [userAdmin, setUserAdmin] = useState(false);
+    const [businessName, setBusinessName] = useState('');;
     const Separator = () => <View style={styles.separator} />;
 
     useEffect(() => {
@@ -17,31 +18,26 @@ const HomeScreen = ({ navigation }) => {
             }
             let auth = 'Bearer ' + value;
             fetch('https://proyecto-estr-fisica.vercel.app/api/me', {
-            method: 'GET',
-            headers: {
-                'Authorization' : auth,
-            },
-        })
-            .then((response) => response.json())
-            .then((responseJson) => {
-                AsyncStorage.setItem('isAdmin', responseJson.isAdmin);
-                setUserName(responseJson.name);
-                setUserEmail(responseJson.email);
-                setUserAdmin(responseJson.isAdmin);
-            }).catch((error) => {
-                console.log(error)
-                console.error("Ocurrio un error al consultar el usuario")
+                method: 'GET',
+                headers: {
+                    'Authorization': auth,
+                },
             })
-                .then(response => response.json())
-                .then(responseJson => {
+                .then((response) => response.json())
+                .then((responseJson) => {
+                    AsyncStorage.setItem('isAdmin', responseJson.isAdmin.toString());
+                    if (responseJson.isAdmin) {
+                        setUserAdmin(true);
+                    }
+                    console.log(responseJson);
                     setUserName(responseJson.name);
                     setUserEmail(responseJson.email);
                     setUserAdmin(responseJson.isAdmin);
+                    setBusinessName(responseJson.businessName);
+                }).catch((error) => {
+                    console.log(error)
+                    console.error("Ocurrio un error al consultar el usuario")
                 })
-                .catch(error => {
-                    console.log(error);
-                    console.error('Ocurrio un error al consultar el usuario');
-                });
         });
     }, []);
 
@@ -66,37 +62,44 @@ const HomeScreen = ({ navigation }) => {
                     <View>
                         <Text style={styles.textSecundaryItem}>Usuario(a): </Text>
                         <Text style={styles.textPrincipalItem}>{userName}</Text>
+                        {userAdmin ?
+                            <>
+                                <Text style={styles.textSecundaryItem}>Tu Negocio: </Text>
+                                <Text style={styles.textPrincipalItem}>{businessName}</Text></>
+                            :
+                            null
+                        }
                         <Text style={styles.texTertiaryItem}>Email: {userEmail}</Text>
                     </View>
                 </View>
             </View>
             <View style={styles.viewButtom}>
-                        <Button
-                            title="Cerrar Sesión"
-                            onPress={() => {
-                                Alert.alert(
-                                    'Log Out',
-                                    'Estás seguro de que deseas cerrar sesión?',
-                                    [
-                                        {
-                                            text: 'Cancel',
-                                            onPress: () => {
-                                                return null;
-                                            },
-                                        },
-                                        {
-                                            text: 'Confirm',
-                                            onPress: () => {
-                                                AsyncStorage.clear();
-                                                navigation.replace('Auth');
-                                            },
-                                        },
-                                    ],
-                                    { cancelable: false },
-                                );
-                            }}
-                        />
-                </View>
+                <Button
+                    title="Cerrar Sesión"
+                    onPress={() => {
+                        Alert.alert(
+                            'Log Out',
+                            'Estás seguro de que deseas cerrar sesión?',
+                            [
+                                {
+                                    text: 'Cancel',
+                                    onPress: () => {
+                                        return null;
+                                    },
+                                },
+                                {
+                                    text: 'Confirm',
+                                    onPress: () => {
+                                        AsyncStorage.clear();
+                                        navigation.replace('Auth');
+                                    },
+                                },
+                            ],
+                            { cancelable: false },
+                        );
+                    }}
+                />
+            </View>
         </View>
     );
 };
