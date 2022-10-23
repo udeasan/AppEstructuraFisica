@@ -13,17 +13,19 @@ export const styles = StyleSheet.create({
     },
     
     textTitle: {
-        fontSize: 30,
-        color:'#fff',
-        marginBottom: 5,
-        marginTop: 5,
+        color: 'white',
+        fontSize: 40,
         textAlign: 'center',
+        fontWeight: 'bold',
+        fontFamily: 'Geneva',
+        marginBottom: 25,
+        marginLeft: -20
     },
 
     containerStyle: {
         flex: 1,
-        marginHorizontal: 20,
-        marginVertical: 30,
+        marginHorizontal: 2,
+        marginVertical: 2,
         position: 'relative',
         justifyContent: 'center',
         alignContent: 'center',
