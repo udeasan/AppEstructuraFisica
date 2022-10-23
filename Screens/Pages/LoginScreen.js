@@ -44,7 +44,7 @@ const LoginScreen = ({ navigation }) => {
     return (
         <View style={styles.containerStyle}>
             <View style={styles.viewTitle}>
-                <Text style={styles.textTitle}>LOGIN</Text>
+                <Text style={styles.textTitle}>Inicio de Sesión</Text>
                 <Separator />
             </View>
 
@@ -52,16 +52,18 @@ const LoginScreen = ({ navigation }) => {
                 <TextInput
                     style={styles.textoInput}
                     onChangeText={userEmail => {setUserEmail(userEmail);}}
-                    placeholder="Ingrese su email"
+                    placeholder="Correo Electrónico"
                     keyboardType="email-address"
+                    placeholderTextColor={'gray'}
                 />
                 <TextInput
                     style={styles.textoInput}
                     onChangeText={userPassword => {
                     setUserPassword(userPassword);
                     }}
-                    placeholder="Enter your password"
+                    placeholder="Contraseña"
                     keyboardType="default"
+                    placeholderTextColor={'gray'}
                     secureTextEntry={true}
                 />
                 {errorText != '' ? (

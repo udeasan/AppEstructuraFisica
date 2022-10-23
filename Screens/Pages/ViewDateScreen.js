@@ -28,8 +28,12 @@ const ViewDateScreen = ({ navigation }) => {
             if (value === null) {
                 navigation.replace('Auth');
             };
+            let url = 'https://proyecto-estr-fisica.vercel.app/api/date';
+            if(AsyncStorage.getItem('isAdmin')) {
+                url = 'https://proyecto-estr-fisica.vercel.app/api/business/date';
+                };
             let auth = "Bearer " + value;
-            fetch('https://proyecto-estr-fisica.vercel.app/api/date', {
+            fetch(url, {
                 method: 'GET',
                 headers: {
                     'Authorization': auth,

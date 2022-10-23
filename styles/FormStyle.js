@@ -8,8 +8,6 @@ export const styles = StyleSheet.create({
         alignContent: 'center',
         paddingLeft: 20,
         paddingRight: 20,
-
-
     },
     
     textTitle: {
@@ -22,8 +20,8 @@ export const styles = StyleSheet.create({
 
     containerStyle: {
         flex: 1,
-        marginHorizontal: 20,
-        marginVertical: 30,
+        // marginHorizontal: 20,
+        // marginVertical: 30,
         position: 'relative',
         justifyContent: 'center',
         alignContent: 'center',
@@ -87,7 +85,7 @@ export const styles = StyleSheet.create({
         alignSelf: 'center',
         justifyContent: 'center',
         flexDirection: 'row',
-
+        marginTop: 20
     },
 
     switchText: {

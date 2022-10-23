@@ -22,6 +22,7 @@ const HomeScreen = ({ navigation }) => {
         })
             .then((response) => response.json())
             .then((responseJson) => {
+                AsyncStorage.setItem('isAdmin', responseJson.isAdmin);
                 setUserName(responseJson.name);
                 setUserEmail(responseJson.email);
                 setUserAdmin(responseJson.isAdmin);

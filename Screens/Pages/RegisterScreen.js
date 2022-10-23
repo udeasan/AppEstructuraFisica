@@ -71,7 +71,7 @@ const RegisterScreen = ({ navigation }) => {
 
     return (
         <View style={styles.containerStyle}>
-            
+
             <View style={styles.viewTitle}>
                 <Text style={styles.textTitle}>REGISTRO</Text>
                 <Separator />
@@ -80,29 +80,30 @@ const RegisterScreen = ({ navigation }) => {
             <View style={styles.formulario}>
                 <TextInput
                     style={styles.textoInput}
-                    onChangeText={userEmail => {setUserEmail(userEmail); }}
-                    placeholder="Enter your email"
+                    onChangeText={userEmail => { setUserEmail(userEmail); }}
+                    placeholder="Correo Electrónico"
                     keyboardType="email-address"
+                    placeholderTextColor={'gray'}
                 />
                 <TextInput
                     style={styles.textoInput}
-                    onChangeText={userName => {setUserName(userName);}}
-                    placeholder="Enter your name"
+                    onChangeText={userName => { setUserName(userName); }}
+                    placeholder="Tu nombre"
                     keyboardType="default"
+                    placeholderTextColor={'gray'}
                 />
                 <TextInput
                     style={styles.textoInput}
-                    onChangeText={userPassword => {setUserPassword(userPassword);}}
-                    placeholder="Enter your password"
+                    onChangeText={userPassword => { setUserPassword(userPassword); }}
+                    placeholder="Contraseña"
                     keyboardType="default"
+                    placeholderTextColor={'gray'}
                     secureTextEntry={true}
                 />
-            </View>
 
-            <View style={styles.switchContainer}>
                 <View style={styles.switch}>
                     <Text
-                    style={styles.switchText}
+                        style={styles.switchText}
                     >¿Es un negocio?</Text>
                     <Switch
                         value={userAdmin}
@@ -113,10 +114,15 @@ const RegisterScreen = ({ navigation }) => {
                     <TextInput
                         style={styles.textoInput}
                         onChangeText={userBusiness => setUserBusiness(userBusiness)}
-                        placeholder="Enter the name of your business"
+                        placeholder="Nombre del negocio"
                         keyboardType="default"
+                        placeholderTextColor={'gray'}
                     />
                 ) : null}
+
+            </View>
+
+            <View style={styles.switchContainer}>
                 {errorText != '' ? (
                     <Text style={styles.errorTextStyle}>{errorText}</Text>
                 ) : null}

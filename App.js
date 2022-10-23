@@ -16,43 +16,32 @@ import ViewDateScreen from './Screens/Pages/ViewDateScreen';
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
-const screenOptions = {
-  "tabBarActiveTintColor": "#e91e63",
-  "tabBarStyle": [
-    {
-      "display": "flex"
-    },
-    null
-  ]
-};
-
 function BottomTabs() {
   return (
-    <Tab.Navigator initialRouteName='Home'
-    screenOptions={screenOptions}
-    >
-      <Tab.Screen name="Home" component={HomeScreen} options={{ 
-        headerShown: false, 
+    <Tab.Navigator initialRouteName='Home' tabBarOptions={{ showIcon: false }}>
+      <Tab.Screen name="Home" component={HomeScreen} options={{
+        tabBarIcon: ({ focused, color, size }) => (
+          <View>
+            <MaterialCommunityIcons name="home" color={"red"} size={10} />
+          </View>
+        ),
+        headerShown: false,
         unmountOnBlur: false,
-        tabBarIcon: ({ color, size }) => (
-          <MaterialCommunityIcons name="home" screenOptions={screenOptions} />
-        ),
-        tabBarLabel: "Inicio"
-      }}/>
-      <Tab.Screen name="NewDate" component={NewDateScreen} options={{ 
-        headerShown: false, 
+        tabBarLabel: "Inicio",
+      }} />
+      <Tab.Screen name="NewDate" component={NewDateScreen} options={{
+        headerShown: false,
         unmountOnBlur: true,
+        tabBarLabel: "Nueva Cita",
+      }} />
+      <Tab.Screen name="ViewDate" component={ViewDateScreen} options={{
         tabBarIcon: ({ color, size }) => (
-          <MaterialCommunityIcons name="home" size={24} color="black" />
+          <MaterialCommunityIcons name="account" color={color} size={size}/>
         ),
-        tabBarLabel: "Nueva Cita" }}/>
-      <Tab.Screen name="ViewDate" component={ViewDateScreen} options={{ 
-        headerShown: false, 
+        headerShown: false,
         unmountOnBlur: true,
-        tabBarIcon: ({ color, size }) => (
-          <MaterialCommunityIcons name="home" size={24} color="black" />
-        ),
-        tabBarLabel: "Mis Citas" }}/>
+        tabBarLabel: "Mis Citas",
+      }} />
     </Tab.Navigator>
   );
 }
