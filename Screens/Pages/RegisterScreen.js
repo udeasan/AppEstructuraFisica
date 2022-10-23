@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
 import {
     Button,
-    ScrollView,
     Switch,
     TextInput,
     View,
-    StyleSheet,
     Text,
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';

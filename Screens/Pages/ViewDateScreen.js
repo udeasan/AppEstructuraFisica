@@ -1,7 +1,9 @@
 import AsyncStorage from "@react-native-community/async-storage";
 import Moment from 'moment';
 import React, { useEffect, useState } from "react";
-import { View, Text, Button, Alert, FlatList, StyleSheet, ScrollView, Modal, Pressable } from "react-native";
+import { View, Text, StyleSheet, ScrollView, Modal, Pressable } from "react-native";
+import {styles} from '../../styles/DateStyle';
+
 
 const ViewDateScreen = ({ navigation }) => {
 
@@ -158,87 +160,3 @@ const ViewDateScreen = ({ navigation }) => {
 }
 
 export default ViewDateScreen;
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#009688',
-        paddingLeft: 25,
-        paddingTop: 50,
-        paddingBottom: 50
-    },
-    textoGeneral: {
-        color: 'white',
-        fontSize: 25,
-        fontFamily: 'Geneva'
-    },
-    textoTitle: {
-        color: 'white',
-        fontSize: 40,
-        textAlign: 'center',
-        fontWeight: 'bold',
-        fontFamily: 'Geneva',
-        marginBottom: 25,
-        marginLeft: -20
-    },
-    textoItem: {
-        color: 'black',
-        fontSize: 25,
-        fontFamily: 'Geneva'
-    },
-    containerItem: {
-        backgroundColor: '#B2DFDB',
-        padding: 20,
-        width: "90%",
-        margin: 5
-    },
-    containerItemEmpty: {
-        backgroundColor: '#009688',
-        padding: 20,
-        width: "90%",
-        margin: 5
-    },
-    centeredView: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        marginTop: 22
-    },
-    modalView: {
-        margin: 20,
-        backgroundColor: "gray",
-        borderRadius: 20,
-        padding: 35,
-        alignItems: "center",
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 2
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 4,
-        elevation: 5
-    },
-    button: {
-        borderRadius: 20,
-        padding: 10,
-        elevation: 2,
-        marginBottom: 20,
-    },
-    buttonOpen: {
-        backgroundColor: "#F194FF",
-    },
-    buttonClose: {
-        backgroundColor: "red",
-        marginBottom: -10
-    },
-    textStyle: {
-        color: "white",
-        fontWeight: "bold",
-        textAlign: "center"
-    },
-    modalText: {
-        marginBottom: 15,
-        textAlign: "center"
-    }
-});

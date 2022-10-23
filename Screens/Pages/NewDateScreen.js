@@ -1,8 +1,9 @@
 import AsyncStorage from "@react-native-community/async-storage";
 import React, { useEffect, useState } from "react";
-import { View, Text, Button, Alert, TextInput, StyleSheet, ScrollView } from "react-native";
+import {View, Text, Button, TextInput, ScrollView, Image} from 'react-native';
 import DatePicker from 'react-native-date-picker';
 import SelectDropdown from 'react-native-select-dropdown';
+import {styles} from '../../styles/DateStyle';
 
 const NewDateScreen = ({ navigation }) => {
 
@@ -90,126 +91,112 @@ const NewDateScreen = ({ navigation }) => {
 
     return (
         <>
-        <ScrollView style={ styles.container }>
-            <Text style={ styles.textoTitle }>Agregar una nueva Cita</Text>
-            <Button title="Elegir Fecha" onPress={() => setOpenDate(true)} />
-            <Button title="Elegir Hora" onPress={() => setOpenHour(true)} />
-            <TextInput
-                style={{ color: 'black', }}
-                onChangeText={(typeInput) => {
-                    setType(typeInput);
-                }}
-                placeholder="Tipo de la Cita"
-                keyboardType="default"
-            />
+            <ScrollView style={styles.container}>
+                <View style={styles.containerSecundary}>
+                    <View style={styles.viewParallelObject}>
+                        <View style={styles.viewSimple}>
+                            <Text style={styles.textoTitle}>Agregar una nueva Cita</Text>
+                        </View>
+                        <View style={styles.viewImage}>
+                            <Image
+                                style={styles.image}
+                                source={require('../../static/imgs/reserva-citas-calendario.jpg')}
+                            />
+                        </View>
+                    </View>
+                    <View>
+                        <TextInput
+                            style={styles.textoInput}
+                            onChangeText={(typeInput) => {setType(typeInput);}}
+                            placeholder="Tipo de la Cita"
+                            keyboardType="default"
+                            />   
+                    </View>
+                    <View style={styles.viewSingleObject}>
+                        <SelectDropdown
+                            data={bussinessList.map(item => item.businessName)}
+                            onSelect={(selectedItem, index) => {
+                                console.log(selectedItem);
+                            }}
+                            defaultButtonText={'Seleccione el lugar'}
+                            buttonTextAfterSelection={(selectedItem, index) => {
+                                setBusinessName(selectedItem);
+                                return selectedItem
+                            }}
+                            rowTextForSelection={(item, index) => {
+                                return item
+                            }}
+                        />
 
-            <SelectDropdown
-                style={styles.containerInputList}
-                data={bussinessList.map(item => item.businessName)}
-                onSelect={(selectedItem, index) => {
-                    console.log(selectedItem);
+                        {errorText != '' ? (
+                            <Text style={styles.errorTextStyle}>{errorText}</Text>
+                        ) : null}
+                    </View>
+                    <View style={styles.viewButtonDateHour}>
+                        <Button
+                            title="Elegir Fecha"
+                            onPress={() => setOpenDate(true)} />
+
+                        <Button
+                            title="Elegir Hora"
+                            onPress={() => setOpenHour(true)} />
+                    </View>
+
+                    <View style={styles.viewSingleObject}>
+                        
+                        <Text style={styles.textoItemNewDate}>
+                            {businessName}</Text>
+
+                        { hasDate &&
+                            <Text style={styles.textoItemNewDateSecundary}>
+                                {date.toDateString()}</Text>
+                        }
+
+                        { hasHour &&
+                            <Text style={styles.textoItemNewDateSecundary}>
+                                {hour.toDateString()}</Text>
+                        }
+
+                    </View>
+                    <View style={styles.viewSingleObject}>
+                        <Button title="Añadir cita" onPress={handleSubmitPress} />
+                    </View>
+                </View> 
+            </ScrollView>
+            <DatePicker
+                modal
+                locale={'es'}
+                open={openDate}
+                date={date}
+                mode="date"
+                minimumDate={new Date()}
+                onConfirm={(date) => {
+                setOpenDate(false)
+                setHasDate(true)
+                setDate(date)
                 }}
-                defaultButtonText={'Seleccione el lugar'}
-                buttonTextAfterSelection={(selectedItem, index) => {
-                    setBusinessName(selectedItem);
-                    return selectedItem
-                }}
-                rowTextForSelection={(item, index) => {
-                    return item
+                onCancel={() => {
+                setOpenDate(false)
                 }}
             />
-
-            {errorText != '' ? (
-                <Text style={styles.errorTextStyle}>{errorText}</Text>
-            ) : null}
-            <Button title="Añadir cita" onPress={handleSubmitPress} />
-            { hasDate &&
-                <Text>{date.toDateString()}</Text>
-            }
-            { hasHour &&
-                <Text>{hour.toDateString()}</Text>
-            }
-            <Text>{businessName}</Text>
-            
-        </ScrollView>
-        <DatePicker
-            modal
-            locale={'es'}
-            open={openDate}
-            date={date}
-            mode="date"
-            minimumDate={new Date()}
-            onConfirm={(date) => {
-            setOpenDate(false)
-            setHasDate(true)
-            setDate(date)
-            }}
-            onCancel={() => {
-            setOpenDate(false)
-            }}
-        />
-        <DatePicker
-            modal
-            locale={'es'}
-            open={openHour}
-            date={hour}
-            mode="time"
-            onConfirm={(hour) => {
-            setOpenHour(false)
-            setHasHour(true)
-            setHour(hour)
-            }}
-            onCancel={() => {
-            setOpenHour(false)
-            }}
-        />
+            <DatePicker
+                modal
+                locale={'es'}
+                open={openHour}
+                date={hour}
+                mode="time"
+                onConfirm={(hour) => {
+                setOpenHour(false)
+                setHasHour(true)
+                setHour(hour)
+                }}
+                onCancel={() => {
+                setOpenHour(false)
+                }}
+            />
         </>
     );
 }
 
 export default NewDateScreen;
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#009688',
-        paddingLeft: 25,
-        paddingTop: 50,
-        paddingBottom: 50
-    },
-    textoGeneral: {
-        color: 'white',
-        fontSize: 25,
-        fontFamily: 'Geneva'
-    },
-    textoTitle: {
-        color: 'white',
-        fontSize: 40,
-        textAlign: 'center',
-        fontWeight: 'bold',
-        fontFamily: 'Geneva',
-        marginBottom: 25,
-        marginLeft: -20
-    },
-    containerItem: {
-        backgroundColor: '#B2DFDB',
-        padding: 20,
-        width: "90%",
-        margin: 5,
-        color: 'black',
-        fontSize: 25,
-        fontFamily: 'Geneva'
-    },
-    containerItemEmpty: {
-        backgroundColor: '#009688',
-        padding: 20,
-        width: "90%",
-        margin: 5
-    },
-    containerInputList: {
-        width: '80%',
-    height: 50,
-    backgroundColor: '#444',
-    borderRadius: 8,
-    }
-});
